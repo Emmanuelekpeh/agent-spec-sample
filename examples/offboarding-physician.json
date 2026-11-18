@@ -1,0 +1,137 @@
+{
+  "id": "proc-offboarding-physician",
+  "title": "Offboard a departing physician",
+  "version": 1,
+  "status": "draft",
+  "owner_role": "Clinic Manager",
+  "trigger": "A physician gives notice of departure.",
+  "preconditions": ["Resignation received in writing", "Last clinical day confirmed"],
+  "roles": [
+    { "name": "Clinic Manager", "does": ["runs the capture checklist", "coordinates record handover"] },
+    { "name": "Departing physician", "does": ["identifies own patients needing transfer", "confirms personal workflow quirks are captured"] },
+    { "name": "Incoming physician or locum", "does": ["receives patient transfers", "takes over scheduling commitments"] }
+  ],
+  "systems": ["Accuro EMR", "Provincial EHR viewer", "Scheduling", "Billing portal"],
+  "steps": [
+    {
+      "n": 1,
+      "actor": "Clinic Manager",
+      "action": "Freeze the physician's scheduling template for future dates and identify all pre-booked appointments.",
+      "system": "Scheduling",
+      "source_id": "img-011",
+      "confidence": "high"
+    },
+    {
+      "n": 2,
+      "actor": "Clinic Manager",
+      "action": "Run the capture checklist against the physician's known processes before the last clinical day, not after.",
+      "system": null,
+      "source_id": "stmt-011",
+      "confidence": "high"
+    },
+    {
+      "n": 3,
+      "actor": "Departing physician",
+      "action": "Identify patients requiring transfer and the receiving physician for each.",
+      "system": "Accuro EMR",
+      "source_id": "stmt-012",
+      "confidence": "low"
+    },
+    {
+      "n": 4,
+      "actor": "Clinic Manager",
+      "action": "Transfer or revoke EMR and provincial viewer access on the last day, and record the date of each change.",
+      "system": "Accuro EMR",
+      "source_id": "img-012",
+      "confidence": "high"
+    },
+    {
+      "n": 5,
+      "actor": "Clinic Manager",
+      "action": "Confirm the billing run is complete and any outstanding claims are assigned to someone who will follow them up.",
+      "system": "Billing portal",
+      "source_id": "stmt-013",
+      "confidence": "high"
+    },
+    {
+      "n": 6,
+      "actor": "Incoming physician or locum",
+      "action": "Confirm acceptance of transferred patients and take over the referral queue.",
+      "system": "Provincial EHR viewer",
+      "source_id": "stmt-014",
+      "confidence": "low"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d2",
+      "question": "Where do unaccepted patient transfers go?",
+      "branches": [
+        {
+          "when": "A receiving physician accepts",
+          "then": "Record the acceptance in the EMR and notify the patient.",
+          "source_id": "stmt-014"
+        },
+        {
+          "when": "No physician has accepted by two weeks before the last day",
+          "then": "UNRESOLVED — see gaps.",
+          "source_id": "stmt-014"
+        }
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "when": "The physician leaves without notice",
+      "then": "UNRESOLVED — there is no agreed emergency procedure. See gaps.",
+      "source_id": "stmt-011"
+    }
+  ],
+  "outputs": ["All patients transferred or an explicit escalation list", "Access revoked and recorded", "Billing follow-up assigned"],
+  "verification": [
+    "Access revocation confirmed against the access log",
+    "Patient transfer list signed off by the clinic manager",
+    "Outstanding claims assigned to a named person"
+  ],
+  "provenance": [
+    { "source_id": "img-011", "type": "image", "captured_at": "2026-11-18", "ref": "scheduling-template-freeze.png", "confidence": "high" },
+    { "source_id": "img-012", "type": "image", "captured_at": "2026-11-18", "ref": "access-revocation-screen.png", "confidence": "high" },
+    { "source_id": "stmt-011", "type": "stated", "captured_at": "2026-11-18", "ref": "\"Last time we did this in the final week and nobody knew half of what he did.\"", "confidence": "high" },
+    { "source_id": "stmt-012", "type": "stated", "captured_at": "2026-11-18", "ref": "\"He knows which patients are his; it's not always clean in the system.\"", "confidence": "low" },
+    { "source_id": "stmt-013", "type": "stated", "captured_at": "2026-11-18", "ref": "\"Claims can trail for a month after someone leaves.\"", "confidence": "high" },
+    { "source_id": "stmt-014", "type": "stated", "captured_at": "2026-11-18", "ref": "\"We assume someone will take them.\"", "confidence": "low" }
+  ],
+  "gaps": [
+    {
+      "step_ref": 3,
+      "where": "step 3 — patient transfer list",
+      "issue": "No agreed definition of 'the physician's patient' when the EMR assignment and reality disagree.",
+      "who_can_answer": "Clinic Manager"
+    },
+    {
+      "step_ref": 6,
+      "where": "step 6 — unaccepted transfers",
+      "issue": "No procedure for transfers nobody accepts; currently resolved ad hoc.",
+      "who_can_answer": "Clinic Manager and incoming physician"
+    },
+    {
+      "step_ref": null,
+      "where": "exceptions — departure without notice",
+      "issue": "No emergency offboarding procedure exists at all.",
+      "who_can_answer": "Clinic Manager"
+    },
+    {
+      "step_ref": 4,
+      "where": "step 4 — access revocation timing",
+      "issue": "Unclear whether provincial viewer access can be revoked same-day or requires a request to the authority.",
+      "who_can_answer": "Clinic Manager"
+    }
+  ],
+  "review": {
+    "status": "pending",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "next_review": null,
+    "change_note": null
+  }
+}

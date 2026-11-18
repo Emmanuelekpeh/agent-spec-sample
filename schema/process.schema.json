@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Emmanuelekpeh/agent-spec-sample/schema/process.schema.json",
+  "title": "Clinic process record",
+  "description": "A governed, sourced record of one clinic process. Drafts may carry gaps; approved records may not.",
+  "type": "object",
+  "required": ["id", "title", "version", "status", "owner_role", "trigger", "steps", "provenance", "gaps", "review"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^proc-[a-z0-9-]+$" },
+    "title": { "type": "string", "minLength": 5, "maxLength": 90 },
+    "version": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["draft", "approved", "superseded"] },
+    "owner_role": { "type": "string", "minLength": 2 },
+    "trigger": { "type": "string", "description": "What starts this process." },
+    "preconditions": { "type": "array", "items": { "type": "string" } },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "does": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "systems": { "type": "array", "items": { "type": "string" } },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "required": ["n", "actor", "action", "source_id"],
+        "additionalProperties": false,
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "actor": { "type": "string" },
+          "action": { "type": "string", "minLength": 5 },
+          "system": { "type": ["string", "null"] },
+          "decision_ref": { "type": ["string", "null"], "description": "Links to decisions[].id when this step branches." },
+          "source_id": { "type": "string", "description": "REQUIRED. A step with no source is an invented step and fails validation." },
+          "confidence": { "enum": ["high", "low"] }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "question", "branches"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "question": { "type": "string" },
+          "branches": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["when", "then"],
+              "additionalProperties": false,
+              "properties": {
+                "when": { "type": "string" },
+                "then": { "type": "string" },
+                "source_id": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["when", "then"],
+        "additionalProperties": false,
+        "properties": {
+          "when": { "type": "string" },
+          "then": { "type": "string" },
+          "source_id": { "type": "string" }
+        }
+      }
+    },
+    "outputs": { "type": "array", "items": { "type": "string" } },
+    "verification": {
+      "type": "array",
+      "description": "How a human confirms the process completed correctly.",
+      "items": { "type": "string" }
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_id", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "source_id": { "type": "string" },
+          "type": { "enum": ["image", "stated", "document"] },
+          "captured_at": { "type": "string", "format": "date" },
+          "ref": { "type": "string", "description": "File name, or the quoted sentence." },
+          "confidence": { "enum": ["high", "low"] }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "Established unknowns. Never silently filled. Must be empty for an approved record.",
+      "items": {
+        "type": "object",
+        "required": ["where", "issue"],
+        "additionalProperties": false,
+        "properties": {
+          "step_ref": { "type": ["integer", "null"] },
+          "where": { "type": "string" },
+          "issue": { "type": "string" },
+          "who_can_answer": { "type": "string" }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["status", "reviewed_by"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["pending", "approved"] },
+        "reviewed_by": { "type": ["string", "null"] },
+        "reviewed_at": { "type": ["string", "null"], "format": "date" },
+        "next_review": { "type": ["string", "null"], "format": "date" },
+        "change_note": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "approved" } } },
+      "then": {
+        "properties": {
+          "gaps": { "maxItems": 0 },
+          "review": {
+            "properties": {
+              "status": { "const": "approved" },
+              "reviewed_by": { "type": "string", "minLength": 2 }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

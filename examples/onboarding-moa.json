@@ -1,0 +1,153 @@
+{
+  "id": "proc-onboarding-moa",
+  "title": "Onboard a new Medical Office Assistant",
+  "version": 2,
+  "status": "approved",
+  "owner_role": "Clinic Manager",
+  "trigger": "A new Medical Office Assistant accepts an offer and a start date is set.",
+  "preconditions": [
+    "Signed offer letter on file",
+    "Start date confirmed with the clinic manager",
+    "Workstation available"
+  ],
+  "roles": [
+    {
+      "name": "Clinic Manager",
+      "does": ["sets up accounts", "assigns a trainer", "signs off the first two weeks"]
+    },
+    {
+      "name": "Experienced MOA (trainer)",
+      "does": ["walks the new hire through each process", "confirms each process was performed once under supervision"]
+    },
+    {
+      "name": "New hire",
+      "does": ["performs each process once under supervision", "uses the process record as the reference, not the trainer"]
+    }
+  ],
+  "systems": ["Accuro EMR", "Provincial EHR viewer", "Billing portal", "Phone and fax", "Payroll portal"],
+  "steps": [
+    {
+      "n": 1,
+      "actor": "Clinic Manager",
+      "action": "Create EMR user account with the correct role template for an MOA; do not copy an existing user's permissions.",
+      "system": "Accuro EMR",
+      "source_id": "img-001",
+      "confidence": "high"
+    },
+    {
+      "n": 2,
+      "actor": "Clinic Manager",
+      "action": "Request provincial EHR viewer access and record the request date, because approval takes several days.",
+      "system": "Provincial EHR viewer",
+      "source_id": "stmt-001",
+      "confidence": "high"
+    },
+    {
+      "n": 3,
+      "actor": "Clinic Manager",
+      "action": "Add the new hire to the payroll portal and confirm the first pay period.",
+      "system": "Payroll portal",
+      "source_id": "img-002",
+      "confidence": "high"
+    },
+    {
+      "n": 4,
+      "actor": "Clinic Manager",
+      "action": "Assign one named trainer for the first two weeks. One trainer, not whoever is free.",
+      "system": null,
+      "source_id": "stmt-002",
+      "confidence": "high"
+    },
+    {
+      "n": 5,
+      "actor": "Experienced MOA (trainer)",
+      "action": "Walk through booking a new patient appointment, then have the new hire book the next one unassisted.",
+      "system": "Accuro EMR",
+      "source_id": "img-003",
+      "confidence": "high"
+    },
+    {
+      "n": 6,
+      "actor": "Experienced MOA (trainer)",
+      "action": "Walk through referral routing and show both routes (portal and fax) before demonstrating either.",
+      "system": "Provincial EHR viewer",
+      "decision_ref": "d1",
+      "source_id": "img-004",
+      "confidence": "high"
+    },
+    {
+      "n": 7,
+      "actor": "Experienced MOA (trainer)",
+      "action": "Walk through submitting one insurance claim and reading the rejection queue.",
+      "system": "Billing portal",
+      "source_id": "img-005",
+      "confidence": "high"
+    },
+    {
+      "n": 8,
+      "actor": "Clinic Manager",
+      "action": "Review the fortnight checklist with the trainer and the new hire; record any process the new hire could not perform unassisted.",
+      "system": null,
+      "source_id": "stmt-002",
+      "confidence": "high"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d1",
+      "question": "How does a referral leave the practice?",
+      "branches": [
+        {
+          "when": "The receiving specialist accepts portal referrals",
+          "then": "Send through the provincial portal and confirm the acknowledgement appears.",
+          "source_id": "stmt-003"
+        },
+        {
+          "when": "The specialist only accepts fax, or the portal is down",
+          "then": "Fax the referral and file the transmission confirmation with the referral record.",
+          "source_id": "stmt-003"
+        }
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "when": "Provincial EHR access has not been approved by the start date",
+      "then": "The new hire shadows only; do not share another user's login. Chase the approval daily.",
+      "source_id": "stmt-001"
+    },
+    {
+      "when": "No trainer is available for the first two weeks",
+      "then": "Move the start date. Starting without a named trainer is how the last two onboarding attempts produced an untrained hire.",
+      "source_id": "stmt-002"
+    }
+  ],
+  "outputs": [
+    "A new hire with working accounts on day one",
+    "A fortnight checklist with each process marked performed / not performed",
+    "A list of processes the new hire could not complete unassisted, fed back into capture"
+  ],
+  "verification": [
+    "Clinic Manager confirms each account exists and the role template is correct",
+    "Trainer signs the fortnight checklist",
+    "New hire performs booking, referral routing and one claim submission unassisted while observed"
+  ],
+  "provenance": [
+    { "source_id": "img-001", "type": "image", "captured_at": "2026-11-18", "ref": "user-management-screen.png", "confidence": "high" },
+    { "source_id": "img-002", "type": "image", "captured_at": "2026-11-18", "ref": "payroll-add-employee.png", "confidence": "high" },
+    { "source_id": "img-003", "type": "image", "captured_at": "2026-11-18", "ref": "booking-calendar.png", "confidence": "high" },
+    { "source_id": "img-004", "type": "image", "captured_at": "2026-11-18", "ref": "referral-portal.png", "confidence": "high" },
+    { "source_id": "img-005", "type": "image", "captured_at": "2026-11-18", "ref": "claim-submission.png", "confidence": "high" },
+    { "source_id": "stmt-001", "type": "stated", "captured_at": "2026-11-18", "ref": "\"Provincial access takes about a week, so request it the day the offer is accepted.\"", "confidence": "high" },
+    { "source_id": "stmt-002", "type": "stated", "captured_at": "2026-11-18", "ref": "\"The mistake we made twice was not naming a trainer.\"", "confidence": "high" },
+    { "source_id": "stmt-003", "type": "stated", "captured_at": "2026-11-18", "ref": "\"Half the specialists take the portal, half only take fax. You have to check.\"", "confidence": "high" }
+  ],
+  "gaps": [],
+  "review": {
+    "status": "approved",
+    "reviewed_by": "Clinic Manager",
+    "reviewed_at": "2026-11-18",
+    "next_review": "2027-02-18",
+    "change_note": "v2: added the named-trainer requirement after two onboarding attempts without one, and the provincial-access lead time."
+  }
+}
