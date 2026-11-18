@@ -60,7 +60,7 @@ Large enough that losing one person breaks a process.
 | **Privacy (PHIPA-style obligations)** | No patient identifiers may enter the repository. Screenshots must be scrubbed. The agent must refuse or redact, not warn-and-continue. |
 | **Small staff, no spare time** | Capture must happen in 5–15 minute increments, mobile-friendly, and never become "a project". |
 | **Nobody maintains documents** | The record must be short and updateable, and updating must be easier than the current nothing. |
-| **Trust** | Staff will not use a knowledge base that is wrong. Wrong is worse than absent. So: no invented steps, provenance mandatory, human approval before publish. |
+| **Trust** | Staff will not use a knowledge base that is wrong. Wrong is worse than absent. So: no invented steps, a recorded source for every step, human approval before publish. |
 | **Regulated environment** | The repository is a controlled document. Version history, approval attribution, and no silent edits. |
 | **Existing systems stay put** | The agent does not replace the EMR and does not automate clinical actions. It captures and structures knowledge; humans still do the work in the systems of record. |
 

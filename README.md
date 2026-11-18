@@ -43,7 +43,7 @@ hire. The agent interviews, resolves ambiguities, and structures it.
 - ordered steps with an actor, an action and a system per step,
 - decisions and branches made explicit instead of buried in "you just know",
 - exceptions and the workaround people actually use,
-- **provenance on every step** — which screenshot or which sentence it came from,
+- **a recorded source for every step** — which screenshot or which sentence it came from,
 - **gaps flagged, not guessed** — anything the agent could not establish becomes a question for a human,
 - a review gate: nothing is published until a person approves it,
 - a version history, so a process can change without losing why it used to work that way.
@@ -74,7 +74,7 @@ examples/            two synthetic records: onboarding an MOA, offboarding a phy
 1. **Gaps over guesses.** A confident wrong step is worse than an explicit "we don't know this yet", because the wrong
    step becomes the new binder. The agent is required to emit `gaps[]` and is forbidden from filling a step it cannot
    source.
-2. **Provenance is mandatory.** Every step carries a `source_id`. A process record with no provenance is a rumour.
+2. **Every step must cite its source.** Each step carries a `source_id`. A process record whose steps cannot be traced is a rumour.
 3. **No auto-publish.** The agent drafts; a named human approves; the version is stamped with who approved it. This is
    the same control shape as any validated-environment content approval, and it is what makes the repository trustworthy
    enough to be the actual source of truth.
@@ -82,7 +82,7 @@ examples/            two synthetic records: onboarding an MOA, offboarding a phy
    happens when it fails. The agent reads the visible facts and asks for the rest rather than inferring intent from a
    button.
 5. **The record is small on purpose.** A process that takes four pages never gets maintained. The schema covers steps,
-   decisions, exceptions, provenance and gaps — and nothing else.
+   decisions, exceptions, sources and gaps — and nothing else.
 
 ## Status — honest
 

@@ -93,7 +93,7 @@
     "Patient transfer list signed off by the clinic manager",
     "Outstanding claims assigned to a named person"
   ],
-  "provenance": [
+  "sources": [
     { "source_id": "img-011", "type": "image", "captured_at": "2026-11-18", "ref": "scheduling-template-freeze.png", "confidence": "high" },
     { "source_id": "img-012", "type": "image", "captured_at": "2026-11-18", "ref": "access-revocation-screen.png", "confidence": "high" },
     { "source_id": "stmt-011", "type": "stated", "captured_at": "2026-11-18", "ref": "\"Last time we did this in the final week and nobody knew half of what he did.\"", "confidence": "high" },

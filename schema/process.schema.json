@@ -4,7 +4,7 @@
   "title": "Clinic process record",
   "description": "A governed, sourced record of one clinic process. Drafts may carry gaps; approved records may not.",
   "type": "object",
-  "required": ["id", "title", "version", "status", "owner_role", "trigger", "steps", "provenance", "gaps", "review"],
+  "required": ["id", "title", "version", "status", "owner_role", "trigger", "steps", "sources", "gaps", "review"],
   "additionalProperties": false,
   "properties": {
     "id": { "type": "string", "pattern": "^proc-[a-z0-9-]+$" },
@@ -91,7 +91,7 @@
       "description": "How a human confirms the process completed correctly.",
       "items": { "type": "string" }
     },
-    "provenance": {
+    "sources": {
       "type": "array",
       "minItems": 1,
       "items": {

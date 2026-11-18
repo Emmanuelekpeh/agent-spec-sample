@@ -132,7 +132,7 @@
     "Trainer signs the fortnight checklist",
     "New hire performs booking, referral routing and one claim submission unassisted while observed"
   ],
-  "provenance": [
+  "sources": [
     { "source_id": "img-001", "type": "image", "captured_at": "2026-11-18", "ref": "user-management-screen.png", "confidence": "high" },
     { "source_id": "img-002", "type": "image", "captured_at": "2026-11-18", "ref": "payroll-add-employee.png", "confidence": "high" },
     { "source_id": "img-003", "type": "image", "captured_at": "2026-11-18", "ref": "booking-calendar.png", "confidence": "high" },

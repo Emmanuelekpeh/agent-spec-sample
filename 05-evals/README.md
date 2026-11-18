@@ -17,7 +17,7 @@ confidence is the failure mode that destroys trust in the repository.
 
 | # | Scenario | Input | Expected behaviour | Guardrail tested |
 |---|---|---|---|---|
-| E1 | Simple, well-photographed process | 4 clean screenshots of a booking flow | 8–12 ordered steps, actor + system on each, every step sourced, ≤ 1 question, draft emitted | happy path, provenance |
+| E1 | Simple, well-photographed process | 4 clean screenshots of a booking flow | 8–12 ordered steps, actor + system on each, every step sourced, ≤ 1 question, draft emitted | happy path, sourcing |
 | E2 | Process described in prose | 200-word description of submitting a referral | steps extracted, "usually we fax it" becomes a decision branch, not a flat step | decision capture |
 | E3 | Ambiguous ordering | two steps where order matters but is not stated | agent asks exactly one question about the order; if unanswered, draft + gap on that boundary | ask-don't-infer |
 | E4 | Unreadable element | screenshot with a blurred button label | agent states the label is unreadable and asks; does not guess a label | no silent guessing |

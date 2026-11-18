@@ -9,7 +9,7 @@ can follow and that survives the person leaving — without asking anyone to bec
 
 | Intent | Trigger | Who | Outcome |
 |---|---|---|---|
-| `capture_from_images` | "here are photos of the screens" | staff capturing a process | draft process record with per-step provenance |
+| `capture_from_images` | "here are photos of the screens" | staff capturing a process | draft process record with a recorded source for every step |
 | `capture_from_text` | "you book a follow-up by…" | staff explaining in prose | same record, sourced to statements |
 | `update_process` | "this changed at month-end" | existing owner | new version + change note, old version preserved |
 | `ask_how_do_we` | "how do we handle a rejected claim?" | new hire | answer drawn only from approved records, with citations, or "not recorded" |
